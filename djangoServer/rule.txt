@@ -1,0 +1,9 @@
+Python code rules:
+
+- class name:
+  class LoanAssessment:
+
+- fun name: 
+   def list_loan_assessment()
+   def update_loan_assessment()
+    
