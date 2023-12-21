@@ -1,8 +1,29 @@
 export default function Navigation() {
   return (
     <div className="navbar bg-gray-300">
-      <div className="flex-1">
-        <a className="btn btn-ghost text-xl">POKI</a>
+      {/* <div className="flex-1">
+        <a className="btn btn-ghost text-xl drawer-button lg:hidden">POKI</a>
+      </div> */}
+      <div className="drawer-content flex-1 flex-col ">
+        <label
+          htmlFor="my-drawer-2"
+          className=" border-2 p-2 rounded  drawer-button lg:hidden"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+            />
+          </svg>
+        </label>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

@@ -33,6 +33,11 @@ export default function AddTask() {
     setSelectedDate(date);
   };
 
+  const edit = () => {
+    // Implement your edit logic here
+    console.log("Edit function called");
+  };
+
   const CustomDatePickerInput = ({ value, onClick }: any) => (
     <div className="relative max-w-sm">
       <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
@@ -44,19 +49,14 @@ export default function AddTask() {
           stroke="currentColor"
           className="w-6 h-6"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
-          />
+          {/* Your SVG path here */}
         </svg>
       </div>
       <input
         onClick={onClick}
         value={value}
         placeholder="Select date"
-        // readOnly
-        className=" w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500  block ps-10 p-3 gray:bg-gray-200 dark:border-gray-600   input input-bordered"
+        className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500  block ps-10 p-3 gray:bg-gray-200 dark:border-gray-600   input input-bordered"
       />
     </div>
   );
@@ -113,7 +113,7 @@ export default function AddTask() {
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                       >
-                        <path d="M10 12l-6-6-1.414 1.414L10 14.828l7.414-7.414L16 6"></path>
+                        {/* Your SVG path here */}
                       </svg>
                     </div>
                   </div>
@@ -125,7 +125,10 @@ export default function AddTask() {
                   />
                 </div>
               </div>
-              <button className="btn bg-blue-700 hover:bg-blue-800 text-white w-full mb-4">
+              <button
+                className="btn bg-blue-700 hover:bg-blue-800 text-white w-full mb-4"
+                onClick={edit} // Use the edit function here
+              >
                 Save
               </button>
             </div>
