@@ -1,9 +1,9 @@
 export default function Navigation() {
   return (
     <div className="navbar bg-gray-300">
-      {/* <div className="flex-1">
-        <a className="btn btn-ghost text-xl drawer-button lg:hidden">POKI</a>
-      </div> */}
+      <div className="flex-1 ml-6">
+        <img src="https://lh6.ggpht.com/aiY9J8YK8Lzr7hMC7nZWlZGiBn8TF_PY7NVNy5U1i5g4zG8yEPzEZTJK2WwbWJUogg" width="75"  alt="" />
+      </div>
       <div className="drawer-content flex-1 flex-col ">
         <label
           htmlFor="my-drawer-2"

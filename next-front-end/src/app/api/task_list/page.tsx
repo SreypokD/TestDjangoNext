@@ -1,7 +1,9 @@
+import Home from "@/app/page";
+
 export default function TaskList() {
     return (
       <>
-        TaskList
+        <Home/>
       </>
     );
   }
