@@ -1,10 +1,9 @@
-"use client"
+"use client";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function UpdateTask() {
-
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const handleDateChange = (date: React.SetStateAction<Date | null>) => {
@@ -41,12 +40,12 @@ export default function UpdateTask() {
 
   return (
     <>
-      <div className="modal-box  p-6 bg-white rounded-lg shadow-lg">
+      <div
+        className="modal-box  p-6 bg-gray-100 rounded-lg shadow-lg mt-20"
+        style={{ width: "700px" }}
+      >
         <form method="dialog" className="">
-          <button
-            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-           
-          >
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
             ✕
           </button>
         </form>
