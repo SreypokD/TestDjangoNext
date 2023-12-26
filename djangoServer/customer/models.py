@@ -8,4 +8,7 @@ class Task(models.Model):
     completed = models.BooleanField(default=False, blank = True, null = True)
 
     def __str__(self):
-        return self.title
+        if self.title is not None:
+            return str(self.title)
+        else:
+            return "Some default string"

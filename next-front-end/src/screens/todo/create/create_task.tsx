@@ -1,42 +1,48 @@
 "use client";
-import axios from "axios";
-import { isBefore, parseISO } from "date-fns";
-import { useState } from "react";
-import { message } from "antd";
-import "react-datepicker/dist/react-datepicker.css";
+import React from 'react';
+import axios from 'axios';
+import { isBefore, parseISO, format } from 'date-fns';
+import { useState } from 'react';
+import { message } from 'antd';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function CreateTask() {
-  const [taskName, setTaskName] = useState("");
-  const [taskStatus, setTaskStatus] = useState("");
+  const [taskName, setTaskName] = useState('');
+  const [taskStatus, setTaskStatus] = useState('');
+  const [formattedDate, setFormattedDate] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const handleDateChange = (date: Date | null) => {
-    if (date) {
-      const currentDate = new Date();
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const dateValue = event.target.value;
+    const parsedDate = dateValue ? parseISO(dateValue) : null;
 
-      if (isBefore(date, currentDate)) {
-        // If selectedDate is before currentDate
-        // Show an error message
-        message.error("Please select a date in the future");
-      } else {
-        setSelectedDate(date);
-      }
+    if (parsedDate && isBefore(parsedDate, new Date())) {
+      // If selectedDate is before currentDate
+      // Show an error message
+      message.error('Please select a date in the future');
+    } else {
+      // Set the formatted date string
+      const newFormattedDate = parsedDate ? format(parsedDate, 'yyyy-MM-dd') : '';
+      setFormattedDate(newFormattedDate);
+
+      // Set the selected date
+      setSelectedDate(parsedDate);
     }
   };
 
   const handleCreateTask = async () => {
     try {
-      const respone = await axios.post(
-        "http://127.0.0.1:8000/api/create-task/",
-        {
-          taskName: taskName,
-          taskStatus: taskStatus,
-          selectedDate: selectedDate,
-        }
-      );
-      console.log(selectedDate);
+      const response = await axios.post('http://127.0.0.1:8000/api/create-task/', {
+        title: taskName,
+        status: taskStatus,
+        date: formattedDate,
+      });
+      console.log(response.data);
+      message.success('Task created!');
+      console.log('date:', formattedDate);
     } catch (err) {
-      console.log("Error create task", err);
+      message.error('Can not create task!')
+      console.log('Error create task', err);
     }
   };
 
@@ -44,17 +50,13 @@ export default function CreateTask() {
     <>
       <div
         className="modal-box  p-6 bg-gray-100 rounded-lg shadow-lg mt-20"
-        style={{ width: "700px" }}
+        style={{ width: '700px' }}
       >
         <form method="dialog" className="">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-            ✕
-          </button>
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         <div className="">
-          <h3 className="font-bold text-2xl mb-4 text-center">
-            Create task here
-          </h3>
+          <h3 className="font-bold text-2xl mb-4 text-center">Create task here</h3>
           <div className="mt-5">
             <input
               type="text"
@@ -91,13 +93,11 @@ export default function CreateTask() {
 
               <input
                 type="date"
-                className="input input-bordered ml-2 w-80 mb-4"
                 id="date"
                 name="date"
-                // value={
-                //   selectedDate 
-                // } // Convert Date to string
-                // onChange={handleDateChange}
+                className="input input-bordered ml-2 w-80 mb-4"
+                value={formattedDate}
+                onChange={handleDateChange}
               />
             </div>
           </div>
@@ -112,6 +112,7 @@ export default function CreateTask() {
     </>
   );
 }
+
 
 // "use client";
 // import React, { useState } from "react";
