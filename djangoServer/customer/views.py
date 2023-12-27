@@ -15,7 +15,8 @@ def apiView(request):
         'TaskDetail': 'task-detail/<str:pk>',
         'CreateTask': '/create-task',
         'UpdateTask': '/update-task/<str:pk>',
-        'DeleteTask': '/delete-task/<str:pk>'
+        'DeleteTask': '/delete-task/<str:pk>',
+        'Complete' : '/complete-task/<str:pk>'
     }
     return Response(api_urls)
 
@@ -56,6 +57,19 @@ def delete_task(request, pk):
     tasks = Task.objects.get(id=pk)
     tasks.delete()
     return Response('Task has been deleted!')
+
+# if complete
+@api_view(['PUT'])
+def complete_task(request, pk):
+    
+    task = Task.objects.get(id=pk)
+    if(task.completed== 'false'):
+        task.completed = True  # Use a single equal sign for assignment
+    else:
+        task.completed =False
+    task.save()
+    serializer = TaskSerializer(task)
+    return Response(serializer.data)
 
 
 

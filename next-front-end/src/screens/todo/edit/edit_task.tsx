@@ -4,8 +4,10 @@ import axios from "axios";
 import { isBefore, parseISO, format } from "date-fns";
 import { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useRouter } from "next/navigation";
 
 export default function UpdateTask() {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [taskNameEdit, setTaskNameEdit] = useState("");
   const [taskStatusEdit, setTaskStatusEdit] = useState("");
@@ -17,7 +19,28 @@ export default function UpdateTask() {
     const pathnameParts = window.location.pathname.split("/");
     const extractedTaskId = pathnameParts[pathnameParts.length - 1];
     setTaskId(extractedTaskId);
+
+    // Fetch task details based on the taskId
+    fetchTaskDetails(extractedTaskId);
   }, []);
+
+  const fetchTaskDetails = async (taskId: string) => {
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/task-detail/${taskId}`
+      );
+      const task = response.data;
+      // console.log(task);
+
+      // Update the state variables with the task details
+      setTaskNameEdit(task.title);
+      setTaskStatusEdit(task.status);
+      setFormattedDate(task.date);
+      setSelectedDate(parseISO(task.date));
+    } catch (err) {
+      console.error("Error fetching task details", err);
+    }
+  };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const dateValue = event.target.value;
@@ -29,7 +52,9 @@ export default function UpdateTask() {
       message.error("Please select a date in the future");
     } else {
       // Set the formatted date string
-      const newFormattedDate = parsedDate ? format(parsedDate, "yyyy-MM-dd") : "";
+      const newFormattedDate = parsedDate
+        ? format(parsedDate, "yyyy-MM-dd")
+        : "";
       setFormattedDate(newFormattedDate);
 
       // Set the selected date
@@ -40,22 +65,24 @@ export default function UpdateTask() {
   const handleEditTask = async () => {
     try {
       // Axios request to update the task
-      const response = await axios.put(`http://127.0.0.1:8000/api/update-task/${taskId}/`, {
-        title: taskNameEdit,
-        status: taskStatusEdit,
-        date: formattedDate,
-      });
-
-      // Handle the response as needed
-      console.log(response.data);
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/update-task/${taskId}/`,
+        {
+          title: taskNameEdit,
+          status: taskStatusEdit,
+          date: formattedDate,
+        }
+      );
 
       // Display a success message
       message.success("Task updated!");
+      router.push("/api/task_list");
     } catch (err) {
       message.error("Error updating task");
       console.log("Error updating task", err);
     }
   };
+
   return (
     <>
       <div
@@ -63,12 +90,16 @@ export default function UpdateTask() {
         style={{ width: "700px" }}
       >
         <form method="dialog" className="">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+           onClick={() => router.push('/api/task_list')}
+          >
             ✕
           </button>
         </form>
         <div className="">
-          <h3 className="font-bold text-2xl mb-4 text-center">Edit task here</h3>
+          <h3 className="font-bold text-2xl mb-4 text-center">
+            Edit task here
+          </h3>
           <div className="mt-5">
             <input
               type="text"
@@ -78,7 +109,7 @@ export default function UpdateTask() {
               className="input input-bordered w-full mb-4"
             />
             <div className="flex">
-              <div className="relative inline-block w-1/2 mb-4">
+              <div className="relative inline-block w-full mb-4">
                 <select
                   value={taskStatusEdit}
                   onChange={(e) => setTaskStatusEdit(e.target.value)}
@@ -87,14 +118,14 @@ export default function UpdateTask() {
                   <option disabled value="">
                     task status
                   </option>
-                  <option value="todo">Todo</option>
+                  <option value="uncomplete">Un complete</option>
                   <option value="inprogress">In Progress</option>
                   <option value="done">Done</option>
                 </select>
 
-                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none ">
+                <div className="absolute inset-y-0 right-0 flex items-center px-2  pointer-events-none ">
                   <svg
-                    className="w-4 h-4 fill-current text-gray-500"
+                    className="w-4 h-4 fill-current text-gray-500 m-3"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                   >
@@ -102,23 +133,25 @@ export default function UpdateTask() {
                   </svg>
                 </div>
               </div>
-
-              <input
-                type="date"
-                id="date"
-                name="date"
-                className="input input-bordered ml-2 w-80 mb-4"
-                value={formattedDate}
-                onChange={handleDateChange}
-              />
             </div>
           </div>
-          <button
-            className="btn bg-blue-700 hover:bg-blue-800 text-white w-full mb-4"
-            onClick={handleEditTask}
-          >
-            Save Edit
-          </button>
+          <div className="">
+            <input
+              type="date"
+              value={formattedDate}
+              onChange={handleDateChange}
+              className="input input-bordered w-full"
+            />
+          </div>
+          <div className="mt-6 flex justify-end">
+            <button
+              type="button"
+              onClick={handleEditTask}
+              className="btn bg-blue-700 hover:bg-blue-800 text-white w-full mb-4"
+            >
+              Save Edit
+            </button>
+          </div>
         </div>
       </div>
     </>
