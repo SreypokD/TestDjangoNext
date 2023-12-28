@@ -63,10 +63,12 @@ def delete_task(request, pk):
 def complete_task(request, pk):
     
     task = Task.objects.get(id=pk)
-    if(task.completed== 'false'):
-        task.completed = True  # Use a single equal sign for assignment
-    else:
-        task.completed =False
+    # if(task.completed== 'false'):
+    task.completed = True  # Use a single equal sign for assignment
+    task.status = 'done'
+
+    # else:
+    #     task.completed =False
     task.save()
     serializer = TaskSerializer(task)
     return Response(serializer.data)

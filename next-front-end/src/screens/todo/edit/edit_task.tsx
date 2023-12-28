@@ -118,7 +118,7 @@ export default function UpdateTask() {
                   <option disabled value="">
                     task status
                   </option>
-                  <option value="uncomplete">Un complete</option>
+                  <option value="uncomplete">Uncomplete</option>
                   <option value="inprogress">In Progress</option>
                   <option value="done">Done</option>
                 </select>

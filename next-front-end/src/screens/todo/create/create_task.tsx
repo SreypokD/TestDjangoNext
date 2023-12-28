@@ -60,7 +60,7 @@ export default function CreateTask() {
   return (
     <>
       <div
-        className="modal-box  p-6 bg-gray-100 rounded-lg shadow-lg mt-20"
+        className="modal-box  p-6 bg-gray-100 rounded-lg shadow-lg mt-20 "
         style={{ width: "700px" }}
       >
         <form method="dialog" className="">
@@ -90,7 +90,7 @@ export default function CreateTask() {
                   <option disabled value="">
                     task status
                   </option>
-                  <option value="uncomplete">Un Complete</option>
+                  <option value="uncomplete">UnComplete</option>
                   <option value="inprogress">In Progress</option>
                   <option value="done">Done</option>
                 </select>

@@ -7,6 +7,7 @@ import { message } from "antd";
 export default function TodoList() {
   const [tasks, setTasks] = useState([]);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   //get all tasks
   useEffect(() => {
     // Fetch data from Django API
@@ -26,11 +27,13 @@ export default function TodoList() {
     // console.log("Clicked delete ID", taskId);
   };
 
-  const renderTaskStatus = (task :any) => {
+  const renderTaskStatus = (task: any) => {
     // console.log(task);
     if (task.status === "uncomplete") {
       return (
-        <span className="badge badge-error badge-outline mt-1 p-2">Uncomplete</span>
+        <span className="badge badge-error badge-outline mt-1 p-2">
+          Uncomplete
+        </span>
       );
     } else if (task.status === "inprogress") {
       return (
@@ -40,38 +43,73 @@ export default function TodoList() {
       );
     } else if (task.status === "done") {
       return (
-        <span className="badge badge-accent badge-outline mt-1 p-2">Complete</span>
+        <span className="badge badge-accent badge-outline mt-1 p-2">
+          Complete
+        </span>
       );
     } else {
-      return <span className="badge badge-outline mt-1 p-2">Unknown Status</span>;
+      return (
+        <span className="badge badge-outline mt-1 p-2">Unknown Status</span>
+      );
     }
   };
 
-  const handleCompleteButtonClick = async (task:any) => {
-    const taskId = task
-    console.log(task);
-    
-    setIsCompleted(!isCompleted);
+  const handleCompleteButtonClick = async (task: any) => {
+    const taskId = task;
+    // console.log(task);
+
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/api/complete-task/${taskId}/`);
-      console.log(response.data);
-      
-    } catch (success) {
-      if (!isCompleted) {
-        message.success('Todo marked as completed');
-      } else {
-        message.error("You're not complete");
-      }
+      const response = await axios.put(
+        `http://127.0.0.1:8000/api/complete-task/${taskId}/`
+      );
+      // Reload the page after successful completion
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+      setIsCompleted(!isCompleted);
+    } catch (err) {
+      message.error("You're not complete");
     }
+    message.success("Todo marked as completed");
   };
 
-
+  // Search task
+  const filteredTasks = tasks.filter((task: any) =>
+    task.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className=" ">
+    <>
+      <div className=" ">
+        <div className="mb-4 flex items-center justify-end">
+          <div className="relative flex items-center">
+            <input
+              type="text"
+              placeholder="Search task"
+              className="input input-bordered w-24 md:w-auto pl-10 pr-4"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
       <table className="table">
         <thead>
-          <tr className="bg-gray-300">
+          <tr className="bg-gray-300 text-base">
             <th>№</th>
             <th>Title</th>
             <th>Status</th>
@@ -79,19 +117,30 @@ export default function TodoList() {
           </tr>
         </thead>
         <tbody>
-          {tasks.map((task: any, index: number) => (
+          {filteredTasks.map((task: any, index: number) => (
             <tr className="hover:bg-gray-200" key={index}>
-              <td >
+              <td>
                 <label>
-                  <input 
-                  type="checkbox" className="checkbox w-5 h-5" 
-                  onClick={()=>handleCompleteButtonClick(task.id)}
+                  <input
+                    type="checkbox"
+                    className="checkbox w-5 h-5"
+                    onChange={() => handleCompleteButtonClick(task.id)}
+                    checked={task.status === "done"}
                   />
                 </label>
               </td>
               <td>
                 <div className="flex flex-col">
-                  <strong className="title">{task.title}</strong>
+                  <strong
+                    className="title "
+                    style={{
+                      textDecoration:
+                        task.status === "done" ? "line-through" : "none",
+                      color: task.status === "done" ? "red" : "inherit",
+                    }}
+                  >
+                    {task.title}
+                  </strong>
                   <div className="flex mt-2 align-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -159,6 +208,6 @@ export default function TodoList() {
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 }

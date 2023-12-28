@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 const MenuBar = () => {
+
   return (
     <>
       <div className="drawer lg:drawer-open">
@@ -12,10 +13,10 @@ const MenuBar = () => {
             aria-label="close sidebar"
             className="drawer-overlay"
           ></label>
-          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+          <ul className="menu p-4 w-80 min-h-full bg-gray-200 text-base-content">
             {/* Sidebar content here */}
             <li>
-              <Link href={"/dashboard"}>
+              <Link href={"/"}>
                 <div className="icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

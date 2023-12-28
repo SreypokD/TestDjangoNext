@@ -1,6 +1,6 @@
 export default function Navigation() {
   return (
-    <div className="navbar bg-gray-300">
+    <div className="navbar bg-gray-200">
       <div className="flex-1 ml-6">
         <img src="https://lh6.ggpht.com/aiY9J8YK8Lzr7hMC7nZWlZGiBn8TF_PY7NVNy5U1i5g4zG8yEPzEZTJK2WwbWJUogg" width="75"  alt="" />
       </div>
@@ -27,11 +27,11 @@ export default function Navigation() {
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">
-          <input
+          {/* <input
             type="text"
             placeholder="Search task"
             className="input input-bordered w-24 md:w-auto"
-          />
+          /> */}
         </div>
         <div className="dropdown dropdown-end">
           <div
