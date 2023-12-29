@@ -104,7 +104,7 @@ const getTotalStatus = (tasks:any) => {
         </div>
 
         <div className="stat w-64">
-          <div className="stat-figure text-yellow-500">
+          <div className="stat-figure text-orange-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -121,7 +121,7 @@ const getTotalStatus = (tasks:any) => {
             </svg>
           </div>
           <div className="stat-title">Inprogress Tasks</div>
-          <div className="stat-value text-yellow-500">{totalInprogress}</div>
+          <div className="stat-value text-orange-500">{totalInprogress}</div>
         </div>
 
         <div className="stat w-64">
